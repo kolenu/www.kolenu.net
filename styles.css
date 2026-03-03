@@ -360,6 +360,17 @@ body {
   margin-top: 1rem;
 }
 
+.privacy-summary {
+  font-size: 0.9rem;
+  color: var(--color-muted, #666);
+  margin-top: 0.5rem;
+}
+
+.privacy-summary a {
+  color: var(--color-primary, #2d5a27);
+  text-decoration: underline;
+}
+
 .download-note {
   font-size: 0.875rem;
   color: var(--color-text-muted);
