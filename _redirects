@@ -1,0 +1,4 @@
+# Cloudflare Pages: clean URLs for doc/decisions/009-landing-website.md
+/privacy    /privacy.html    301
+/support    /support.html    301
+/terms      /terms.html      301
