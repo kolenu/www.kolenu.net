@@ -1,5 +1,7 @@
 function createKolenuUnifiedFormSinglePage() {
   const form = FormApp.create("Kolenu Voice Submission");
+  // Do not require Google sign-in; respondents can submit with or without logging in.
+  form.setCollectEmail(false);
   const requiredClause =
     "I confirm either (a) the melody is traditional/public-domain nusach, or (b) we have\n" +
     "permission to submit and use this performance.\n\n" +
@@ -39,10 +41,8 @@ function createKolenuUnifiedFormSinglePage() {
       "I confirm the parent/guardian consent terms above and the required clause in this section.",
     ])
     .setHelpText(
-      "I am the parent or legal guardian of the minor identified in this submission.\n" +
-        "I grant Kolenu a non-exclusive, worldwide, royalty-free license to record, edit,\n" +
-        "reproduce, distribute, and publicly perform my child’s submitted voice recording\n" +
-        "within the Kolenu app and related Kolenu educational/promotional materials.\n\n" +
+      "I am the parent or legal guardian of the minor identified in this submission.\n\n" +
+        "Kolenu is a community-supported educational project. By submitting this recording, I grant DigiMint Inc. (operator of the Kolenu app) a non-exclusive, worldwide, irrevocable, royalty-free license to use, reproduce, distribute, and publicly perform my child’s submitted voice recording for educational purposes within the Kolenu app and related materials.\n\n" +
         requiredClause,
     )
     .setRequired(true);
@@ -63,11 +63,12 @@ function createKolenuUnifiedFormSinglePage() {
   // --- Adult Path ---
   const adultPage = form.addPageBreakItem().setTitle("Adult Permission");
 
+  form.addTextItem().setTitle("Email").setRequired(true);
   form
     .addCheckboxItem()
     .setTitle("Permission Confirmation (for Adults)")
     .setChoiceValues([
-      "I grant Kolenu a non-exclusive, worldwide, royalty-free license to use my recording for educational purposes within the Kolenu app and related materials.",
+      "Kolenu is a community-supported educational project. By submitting this recording, I grant DigiMint Inc. (operator of the Kolenu app) a non-exclusive, worldwide, irrevocable, royalty-free license to use, reproduce, distribute, and publicly perform my recording for educational purposes within the Kolenu app and related materials.",
     ])
     .setHelpText(
       requiredClause +

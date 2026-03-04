@@ -50,6 +50,3 @@
 * **Adult submissions** do not see that attribution question; attribution is generated from submitted name/city.
 * Shared sections collect contributor details, prayer details, and Google Drive audio link.
 
-* the current form link:
-https://docs.google.com/forms/d/e/1FAIpQLScmmXpwYUTYMwI4xSy-zB2h-hn7KOc3d1czfvLotATn2h30cA/viewform
----
