@@ -1,130 +1,146 @@
 function createKolenuUnifiedFormSinglePage() {
-  const form = FormApp.create("Kolenu Voice Submission");
-  // Do not require Google sign-in; respondents can submit with or without logging in.
-  form.setCollectEmail(false);
+  const FORM_VERSION = "1.0";
+  const form = FormApp.create("Kolenu Voice Submission v" + FORM_VERSION);
+
+  // Collect verified email for legal record
+  form.setCollectEmail(true);
+
   const requiredClause =
-    "I confirm either (a) the melody is traditional/public-domain nusach, or (b) we have\n" +
-    "permission to submit and use this performance.\n\n" +
-    "I understand participation is voluntary, no placement is guaranteed, and Kolenu may\n" +
-    "remove content at its discretion.\n\n" +
-    "I approve display attribution as selected in this form (first name/city or anonymous).";
+    "I confirm either (a) the melody is traditional/public-domain nusach, or (b) we have permission to submit and use this performance.\n\n" +
+    "Kolenu may review submissions and may remove content at its discretion. We may also honor reasonable removal requests.\n\n" +
+    "I approve the attribution format described below.";
 
   form.setDescription(
-    "Thank you for contributing to Kolenu.\n\n" +
-      "This form accepts Hebrew prayer recordings from both teens (via parent/guardian) and adults.\n\n" +
-      "Upload your audio to your own Google Drive and set sharing to:\n" +
-      "'Anyone with the link can view'\n" +
-      "Then paste the link below.",
+    "Thank you for lending your voice to Kolenu.\n\n" +
+    "Kolenu is a community-supported project helping Jews of all backgrounds learn traditional Hebrew prayer with confidence.\n\n" +
+    "This form accepts recordings from both teens (submitted by a parent/guardian) and adults.\n\n" +
+    "Learn more: https://www.kolenu.net/contribute.html\n\n" +
+    "To submit:\n" +
+    "• Upload your audio to your own Google Drive\n" +
+    "• Set sharing to 'Anyone with the link can view'\n" +
+    "• Paste the link below\n\n" +
+    "We are grateful for your contribution to our shared tradition."
   );
 
-  // --- Contributor Type (branch selector) ---
+  // --- Contributor Type ---
   const contributorTypeItem = form
     .addMultipleChoiceItem()
     .setTitle("I am submitting as:")
     .setRequired(true)
-    .setHelpText(
-      "Select contributor type. You will be routed to the required consent section.",
-    );
+    .setHelpText("Select contributor type to continue to the appropriate consent section.");
 
   // --- Teen Path ---
   const teenPage = form
     .addPageBreakItem()
-    .setTitle("Parent / Guardian Consent (for Teens)");
+    .setTitle("Parent / Guardian Consent (Teen Submission)");
 
-  // --- Teen Path ---
   form.addTextItem().setTitle("Parent/Guardian Name").setRequired(true);
   form.addTextItem().setTitle("Parent/Guardian Email").setRequired(true);
+
   form
     .addCheckboxItem()
-    .setTitle("Consent Confirmation (for Teens)")
+    .setTitle("Guardian Confirmation")
     .setChoiceValues([
-      "I confirm the parent/guardian consent terms above and the required clause in this section.",
+      "I confirm that I am the legal guardian and at least 18 years old."
     ])
-    .setHelpText(
-      "I am the parent or legal guardian of the minor identified in this submission.\n\n" +
-        "Kolenu is a community-supported educational project. By submitting this recording, I grant DigiMint Inc. (operator of the Kolenu app) a non-exclusive, worldwide, irrevocable, royalty-free license to use, reproduce, distribute, and publicly perform my child’s submitted voice recording for educational purposes within the Kolenu app and related materials.\n\n" +
-        requiredClause,
-    )
     .setRequired(true);
 
-  // --- Teen Attribution Preference ---
   form
-    .addMultipleChoiceItem()
-    .setTitle("How should this recording be attributed? (Teen submissions)")
-    .setChoiceValues(["First Name + City", "First Name only", "Anonymous"])
+    .addCheckboxItem()
+    .setTitle("Consent Confirmation (Teen Submission)")
+    .setChoiceValues([
+      "I am the parent or legal guardian of this contributor.\n" +
+      "I confirm that this recording was made by my child and that we have the right to share it.\n" +
+      "I give DigiMint Inc. (operator of the Kolenu app) permission to use, reproduce, and share this recording within the Kolenu app and related educational materials.\n" +
+      "This permission is worldwide, royalty-free, and ongoing."
+    ])
     .setHelpText(
-      'Recommended attribution: "Voice contributed by Daniel (Age 13), Toronto"\n\n' +
-        "Privacy-first alternatives:\n" +
-        '• "Youth contributor, Toronto"\n' +
-        '• "Youth contributor"',
+      requiredClause +
+      "\n\nLicense Version: 1.0 – Effective March 2026\n\n" +
+      "Teen Contributors (Under 18)\n" +
+      "To protect minors, we never publish last names.\n" +
+      "Your child may be credited as: First Name + City — Example: Daniel (Age 13), Toronto\n\n" +
+      "Parents/guardians must approve all teen submissions before publication."
     )
     .setRequired(true);
 
   // --- Adult Path ---
-  const adultPage = form.addPageBreakItem().setTitle("Adult Permission");
+  const adultPage = form.addPageBreakItem().setTitle("Adult Submission Permission");
 
-  form.addTextItem().setTitle("Email").setRequired(true);
   form
     .addCheckboxItem()
-    .setTitle("Permission Confirmation (for Adults)")
+    .setTitle("Age Confirmation")
     .setChoiceValues([
-      "Kolenu is a community-supported educational project. By submitting this recording, I grant DigiMint Inc. (operator of the Kolenu app) a non-exclusive, worldwide, irrevocable, royalty-free license to use, reproduce, distribute, and publicly perform my recording for educational purposes within the Kolenu app and related materials.",
+      "I confirm that I am at least 18 years old."
+    ])
+    .setRequired(true);
+
+  form
+    .addCheckboxItem()
+    .setTitle("Permission Confirmation (Adult Submission)")
+    .setChoiceValues([
+      "Kolenu is a community-supported educational project.\n" +
+      "By submitting this recording, I confirm that I am the original recorder and that I have the right to share it.\n" +
+      "I give DigiMint Inc. (operator of the Kolenu app) permission to use, reproduce, and share my recording within the Kolenu app and related educational materials.\n" +
+      "This permission is worldwide, royalty-free, and ongoing."
     ])
     .setHelpText(
       requiredClause +
-        '\n\nAdult attribution will be generated from your submitted name and city (for example: "Voice contributed by Daniel Goldman, Toronto").',
+      "\n\nLicense Version: 1.0 – Effective March 2026\n\n" +
+      "Adult Contributors (18+)\n" +
+      "You may be credited as: Full Name + City — Example: Rachel Cohen, Vancouver"
     )
     .setRequired(true);
 
-  // --- Shared Path ---
+  // --- Shared Section ---
   const sharedPage = form.addPageBreakItem().setTitle("Submission Details");
 
-  // Route both contributor types to shared section after consent pages
   teenPage.setGoToPage(sharedPage);
   adultPage.setGoToPage(sharedPage);
 
-  // Attach branch routing choices after pages exist
   contributorTypeItem.setChoices([
-    contributorTypeItem.createChoice(
-      "Teen (parent/guardian submission)",
-      teenPage,
-    ),
+    contributorTypeItem.createChoice("Teen (parent/guardian submission)", teenPage),
     contributorTypeItem.createChoice("Adult", adultPage),
   ]);
 
-  // --- Shared Section: Contributor Details ---
   form.addSectionHeaderItem().setTitle("Contributor Details");
+
   form
     .addTextItem()
     .setTitle("Name")
-    .setHelpText(
-      "For teens: only first name will be displayed. Adults may enter full name.",
-    )
+    .setHelpText("For teens, only first name will be displayed. Adults may enter full name.")
     .setRequired(true);
-  form.addTextItem().setTitle("City (optional)");
-  form.addTextItem().setTitle("Synagogue/Community (optional)");
 
-  // --- Shared Section: Prayer Details ---
+  form.addTextItem().setTitle("City (optional)");
+  form.addTextItem().setTitle("Synagogue or Community (optional)");
+
   form.addSectionHeaderItem().setTitle("Prayer Details");
+
   form.addTextItem().setTitle("Prayer Name").setRequired(true);
   form.addTextItem().setTitle("Nusach / Tradition (optional)");
-  form.addTextItem().setTitle("Prayer Book / Reference / Link (optional)");
+  form.addTextItem().setTitle("Prayer Book / Reference (optional)");
 
-  // --- Section: Audio Submission ---
   form.addSectionHeaderItem().setTitle("Audio Submission");
+
   form
     .addTextItem()
     .setTitle("Google Drive Link to Audio File")
     .setHelpText(
       "• Record long enough to complete the full prayer\n" +
-        "• Avoid background noise if possible\n" +
-        "• Ensure sharing is set to 'Anyone with the link can view'",
+      "• Avoid background noise if possible\n" +
+      "• Ensure sharing is set to 'Anyone with the link can view'"
     )
     .setRequired(true);
 
-  // --- Confirmation Message ---
+  form
+    .addParagraphTextItem()
+    .setTitle("Comments (optional)")
+    .setHelpText("Any additional notes about your recording, tradition, or submission.");
+
   form.setConfirmationMessage(
-    "Thank you for your contribution to Kolenu. Submissions are reviewed before being used as learning material.",
+    "Thank you for contributing your voice to Kolenu.\n\n" +
+    "Submissions are reviewed before being included as learning material.\n\n" +
+    "Together, we strengthen our shared tradition."
   );
 
   Logger.log("Form URL: " + form.getPublishedUrl());
