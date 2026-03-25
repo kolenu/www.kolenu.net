@@ -6,7 +6,7 @@ Static landing page for the Kolenu app.
 
 Run a local server from inside this directory so images and styles load correctly.
 
-**Use `./serve.sh` or `python3 serve_dev.py`** — these read `_redirects`, so `/support`, `/privacy`, and `/terms` behave like production.
+**Use `./serve.sh` or `python3 serve_dev.py`** — these read `_redirects`, so `/`, `/support`, `/privacy`, and `/terms` behave like production.
 
 `python3 -m http.server` only serves files; it **does not** apply `_redirects` (that happens on Cloudflare when deployed).
 
