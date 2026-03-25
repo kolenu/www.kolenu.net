@@ -1,4 +1,4 @@
-# Cloudflare Pages: clean URLs for doc/decisions/009-landing-website.md
-/privacy    /privacy.html    301
-/support    /support.html    301
-/terms      /terms.html      301
+# Extensionless URLs → .html (requires assets.html_handling "none" so *.html is not canonicalized back)
+/support   /support.html   301
+/privacy   /privacy.html   301
+/terms     /terms.html     301

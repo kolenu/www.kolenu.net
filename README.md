@@ -4,12 +4,17 @@ Static landing page for the Kolenu app.
 
 ## Test before commit
 
-Run a local server from inside this directory so images and styles load correctly:
+Run a local server from inside this directory so images and styles load correctly.
+
+**Use `./serve.sh` or `python3 serve_dev.py`** — these read `_redirects`, so `/support`, `/privacy`, and `/terms` behave like production.
+
+`python3 -m http.server` only serves files; it **does not** apply `_redirects` (that happens on Cloudflare when deployed).
 
 ```bash
 cd www.kolenu.net
-python3 -m http.server 8080
-# Or: ./serve.sh
+./serve.sh
+# Or: python3 serve_dev.py --port 8080
+# Plain static only (no redirects): python3 serve_dev.py --no-redirects
 ```
 
 Open http://localhost:8080 and verify links, layout, and content before committing.
